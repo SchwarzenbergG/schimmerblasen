@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schimmerblasen</title>
+  <meta name="description" content="Rationale Zahlen von klein nach groß verbinden. Dezimalzahlen und Brüche, Klasse 6.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%23e8f7ff' stroke='%23f4c7e4' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+  </div>
+  <canvas id="motes" aria-hidden="true"></canvas>
+  <nav class="langs" id="langs" aria-label="Sprache">
+    <button type="button" data-lang="de" lang="de" aria-pressed="true">DE</button>
+    <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
+    <button type="button" data-lang="fr" lang="fr" aria-pressed="false">FR</button>
+    <button type="button" data-lang="es" lang="es" aria-pressed="false">ES</button>
+  </nav>
+
+  <section class="screen" id="home" data-screen="home">
+    <div class="home-wrap">
+      <p class="eyebrow" data-i18n="eyebrow">Rationale Zahlen · Klasse 6</p>
+      <h1>Schimmerblasen</h1>
+      <p class="lead" data-i18n="lead">Verbinde die Zahlen von der kleinsten zur größten.</p>
+      <div class="demo" aria-hidden="true">
+        <div class="bubble deco is-neg" style="--size:74px;--hue:330;--sheen-delay:-.4s;--spin-dur:8s">
+          <span class="sheen"></span>
+          <span class="face"><span class="deci" data-deci="-1.5">−1,5</span></span>
+        </div>
+        <div class="demo-link"></div>
+        <div class="bubble deco is-zero" style="--size:68px;--hue:174;--sheen-delay:-2.2s;--spin-dur:6.5s">
+          <span class="sheen"></span>
+          <span class="face"><span class="deci" data-deci="0.5">0,5</span></span>
+        </div>
+        <div class="demo-link"></div>
+        <div class="bubble deco" style="--size:80px;--hue:200;--sheen-delay:-3.4s;--spin-dur:9s">
+          <span class="sheen"></span>
+          <span class="face"><span class="deci" data-deci="2.8">2,8</span></span>
+        </div>
+      </div>
+      <div class="modes">
+        <button class="mode-card" type="button" id="open-dezi">
+          <span class="card-row" aria-hidden="true">
+            <span class="bubble deco" style="--size:66px;--hue:190;--sheen-delay:-1s">
+              <span class="sheen"></span>
+              <span class="face"><span class="deci" data-deci="0.8">0,8</span></span>
+            </span>
+            <span class="demo-link"></span>
+            <span class="bubble deco" style="--size:72px;--hue:28;--sheen-delay:-2.5s">
+              <span class="sheen"></span>
+              <span class="face"><span class="deci" data-deci="2.05">2,05</span></span>
+            </span>
+          </span>
+          <span class="kicker" data-i18n="kickerMode">Modus</span>
+          <span class="card-title" data-i18n="cardDeziTitle">Dezimalzahlen</span>
+          <span class="card-lead" data-i18n="cardDeziLead">Zahlen mit Komma, bis zu zwei Stellen, auch unter null.</span>
+          <span class="card-meta" id="meta-dezi"></span>
+        </button>
+        <button class="mode-card" type="button" id="open-bruch">
+          <span class="card-row" aria-hidden="true">
+            <span class="bubble deco" style="--size:70px;--hue:262;--sheen-delay:-.8s">
+              <span class="sheen"></span>
+              <span class="face"><span class="stack"><span class="num">1</span><span class="bar"></span><span class="den">2</span></span></span>
+            </span>
+            <span class="demo-link"></span>
+            <span class="bubble deco" style="--size:76px;--hue:150;--sheen-delay:-2s">
+              <span class="sheen"></span>
+              <span class="face"><span class="stack"><span class="num">3</span><span class="bar"></span><span class="den">4</span></span></span>
+            </span>
+          </span>
+          <span class="kicker" data-i18n="kickerMode">Modus</span>
+          <span class="card-title" data-i18n="cardBruchTitle">Brüche</span>
+          <span class="card-lead" data-i18n="cardBruchLead">Echte Brüche, gemischte Zahlen und negative Brüche.</span>
+          <span class="card-meta" id="meta-bruch"></span>
+        </button>
+        <button class="mode-card finale" type="button" id="open-misch">
+          <span class="card-row" aria-hidden="true">
+            <span class="bubble deco is-neg" style="--size:70px;--hue:330;--sheen-delay:-.6s">
+              <span class="sheen"></span>
+              <span class="face"><span class="deci" data-deci="-0.5">−0,5</span></span>
+            </span>
+            <span class="demo-link"></span>
+            <span class="bubble deco" style="--size:76px;--hue:262;--sheen-delay:-1.8s">
+              <span class="sheen"></span>
+              <span class="face"><span class="stack"><span class="num">1</span><span class="bar"></span><span class="den">2</span></span></span>
+            </span>
+            <span class="demo-link"></span>
+            <span class="bubble deco" style="--size:78px;--hue:28;--sheen-delay:-2.6s">
+              <span class="sheen"></span>
+              <span class="face"><span class="whole">1</span><span class="stack"><span class="num">1</span><span class="bar"></span><span class="den">5</span></span></span>
+            </span>
+          </span>
+          <span class="kicker" data-i18n="kickerFinale">Abschluss</span>
+          <span class="card-title" data-i18n="cardMischTitle">Perlmutt</span>
+          <span class="card-lead" data-i18n="cardMischLead">Dezimalzahlen, Brüche und gemischte Zahlen in einer Runde.</span>
+          <span class="card-meta" id="meta-misch"></span>
+        </button>
+      </div>
+      <p class="how" data-i18n="how">Tippe die Blasen der Reihe nach an. Eine Leuchtkette verbindet sie, und die Zahlen setzen sich auf den Zahlenstrahl.</p>
+      <button class="textbtn" type="button" id="reset" data-i18n="reset">Fortschritt löschen</button>
+    </div>
+  </section>
+
+  <section class="screen" id="levels" data-screen="levels" hidden>
+    <div class="levels-wrap">
+      <div class="top">
+        <button class="hudbtn" type="button" id="back-home" data-i18n="backHome">Start</button>
+        <div class="grow">
+          <p class="kicker" id="levels-kicker"></p>
+          <h1 id="levels-title"></h1>
+          <p class="lead" id="levels-lead"></p>
+        </div>
+      </div>
+      <p class="fine" data-i18n="fine">Jeder Fehler und jede Hilfe kostet einen Stern. Drei Sterne gibt es ohne Fehler und ohne Hilfe.</p>
+      <div class="level-list" id="level-list"></div>
+    </div>
+  </section>
+
+  <section class="screen" id="play" data-screen="play" hidden>
+    <header class="top">
+      <button class="hudbtn" type="button" id="back-levels" data-i18n="backLevels">Level</button>
+      <div class="grow">
+        <p class="kicker" id="play-kicker"></p>
+        <h1 id="play-title"></h1>
+      </div>
+      <div class="hud-right">
+        <div id="live-stars" class="stars" role="img"></div>
+        <button class="hudbtn" type="button" id="sound"></button>
+      </div>
+    </header>
+    <p class="goal" id="goal"></p>
+    <div class="stage" id="stage">
+      <svg id="links" aria-hidden="true">
+        <defs>
+          <filter id="pearlglow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="1.5" result="b"></feGaussianBlur>
+            <feMerge>
+              <feMergeNode in="b"></feMergeNode>
+              <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+          </filter>
+        </defs>
+      </svg>
+      <div id="bubbles"></div>
+    </div>
+    <div class="nline" id="nline" aria-hidden="true"></div>
+    <div class="play-bottom">
+      <p id="feedback" aria-live="polite"></p>
+      <div class="actions">
+        <button class="hudbtn" type="button" id="rule" data-i18n="rule">Merksatz</button>
+        <button class="hudbtn" type="button" id="hint" data-i18n="hint" title="Hebt die nächste Blase hervor. Kostet einen Stern.">Hilfe</button>
+      </div>
+    </div>
+  </section>
+
+  <dialog id="done">
+    <div class="done-card">
+      <p class="kicker" id="done-kicker"></p>
+      <h2 id="done-title"></h2>
+      <div id="done-stars" class="stars big" role="img"></div>
+      <p id="done-stats"></p>
+      <p id="done-note"></p>
+      <p class="fine" id="done-seq-label" data-i18n="seqLabel">Von klein nach groß</p>
+      <div id="done-seq" class="seq" aria-hidden="true"></div>
+      <p id="done-order" class="sr"></p>
+      <div class="done-actions">
+        <button class="ghost" type="button" id="done-replay" data-i18n="replay">Nochmal</button>
+        <button class="primary" type="button" id="done-next" data-i18n="next">Nächstes Level</button>
+        <button class="ghost" type="button" id="done-list" data-i18n="toList">Zur Übersicht</button>
+      </div>
+    </div>
+  </dialog>
+
+  <noscript><p>Zum Spielen muss JavaScript an sein. JavaScript needs to be on to play. JavaScript doit être activé pour jouer. Para jugar, JavaScript tiene que estar activado.</p></noscript>
+  <script src="i18n.js"></script>
+  <script src="logic.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
