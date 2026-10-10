@@ -1,4 +1,4 @@
-/* Schimmerblasen — rationale Zahlen vergleichen und ordnen (Klasse 6).
+/* Zauberhafte Zahlenordnung — rationale Zahlen vergleichen und ordnen (Klasse 6).
    All values stay exact fractions. Decimals are hundredths or tenths. */
 (function (root, factory) {
   const api = factory();

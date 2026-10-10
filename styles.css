@@ -92,6 +92,14 @@ h1 {
   50% { background-position: 100% 50%; }
 }
 
+#home h1 {
+  max-width: 18ch;
+  font-size: clamp(2.6rem, 6.2vw, 4.15rem);
+  line-height: 0.98;
+  white-space: pre-line;
+  text-wrap: balance;
+}
+
 .lead, .how, .fine {
   color: var(--muted);
   font-size: 1.12rem;
@@ -621,6 +629,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
   .lead, .card-lead, .how, .fine { font-size: 1rem; }
   .card-title { font-size: clamp(1.55rem, 7vw, 2rem); }
   h1 { font-size: clamp(1.7rem, 8vw, 2.7rem); }
+  #home h1 { font-size: clamp(1.85rem, 8.4vw, 2.45rem); }
   .top { align-items: flex-start; }
   #play .top { align-items: center; gap: 8px; }
   #play .hud-right { flex-direction: column; align-items: flex-end; gap: 4px; }

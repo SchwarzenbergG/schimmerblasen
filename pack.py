@@ -7,7 +7,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent
 TARGET = ROOT / "Schimmerblasen.html"
 
-COMMENT = """<!-- Schimmerblasen, eine Datei. Funktioniert ohne weitere Dateien und ohne Internet.
+COMMENT = """<!-- Zauberhafte Zahlenordnung, eine Datei. Funktioniert ohne weitere Dateien und ohne Internet.
      Schriften: Fraunces (Copyright 2018 The Fraunces Project Authors) und
      Nunito (Copyright 2014 The Nunito Project Authors), SIL Open Font License 1.1.
      https://openfontlicense.org -->

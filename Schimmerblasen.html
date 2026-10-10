@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Schimmerblasen, eine Datei. Funktioniert ohne weitere Dateien und ohne Internet.
+<!-- Zauberhafte Zahlenordnung, eine Datei. Funktioniert ohne weitere Dateien und ohne Internet.
      Schriften: Fraunces (Copyright 2018 The Fraunces Project Authors) und
      Nunito (Copyright 2014 The Nunito Project Authors), SIL Open Font License 1.1.
      https://openfontlicense.org -->
@@ -7,8 +7,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Schimmerblasen</title>
-  <meta name="description" content="Rationale Zahlen von klein nach groß verbinden. Dezimalzahlen und Brüche, Klasse 6.">
+  <title>Zauberhafte Zahlenordnung</title>
+  <meta name="description" content="Zauberhafte Zahlenordnung. Rationale Zahlen von klein nach groß verbinden. Dezimalzahlen und Brüche, Klasse 6.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%23e8f7ff' stroke='%23f4c7e4' stroke-width='2'/%3E%3C/svg%3E">
   <style>
 @font-face {
@@ -119,6 +119,14 @@ h1 {
 @keyframes titleShift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+#home h1 {
+  max-width: 18ch;
+  font-size: clamp(2.6rem, 6.2vw, 4.15rem);
+  line-height: 0.98;
+  white-space: pre-line;
+  text-wrap: balance;
 }
 
 .lead, .how, .fine {
@@ -650,6 +658,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
   .lead, .card-lead, .how, .fine { font-size: 1rem; }
   .card-title { font-size: clamp(1.55rem, 7vw, 2rem); }
   h1 { font-size: clamp(1.7rem, 8vw, 2.7rem); }
+  #home h1 { font-size: clamp(1.85rem, 8.4vw, 2.45rem); }
   .top { align-items: flex-start; }
   #play .top { align-items: center; gap: 8px; }
   #play .hud-right { flex-direction: column; align-items: flex-end; gap: 4px; }
@@ -717,7 +726,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
   <section class="screen" id="home" data-screen="home">
     <div class="home-wrap">
       <p class="eyebrow" data-i18n="eyebrow">Rationale Zahlen · Klasse 6</p>
-      <h1>Schimmerblasen</h1>
+      <h1 data-i18n="appTitle">Zauberhafte Zahlenordnung</h1>
       <p class="lead" data-i18n="lead">Verbinde die Zahlen von der kleinsten zur größten.</p>
       <div class="demo" aria-hidden="true">
         <div class="bubble deco is-neg" style="--size:74px;--hue:330;--sheen-delay:-.4s;--spin-dur:8s">
@@ -870,7 +879,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
 
   <noscript><p>Zum Spielen muss JavaScript an sein. JavaScript needs to be on to play. JavaScript doit être activé pour jouer. Para jugar, JavaScript tiene que estar activado.</p></noscript>
   <script>
-/* Schimmerblasen — interface copy for de, en, fr, es.
+/* Zauberhafte Zahlenordnung — interface copy for de, en, fr, es.
    Number speech used by logic.js lives in speech(). */
 (function (root) {
   const LANGS = ["de", "en", "fr", "es"];
@@ -1121,7 +1130,8 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
 
   const TEXT = {
     de: {
-      meta: "Rationale Zahlen von klein nach groß verbinden. Dezimalzahlen und Brüche, Klasse 6.",
+      appTitle: "Zauberhafte\nZahlenordnung",
+      meta: "Zauberhafte Zahlenordnung. Rationale Zahlen von klein nach groß verbinden. Dezimalzahlen und Brüche, Klasse 6.",
       eyebrow: "Rationale Zahlen · Klasse 6",
       lead: "Verbinde die Zahlen von der kleinsten zur größten.",
       cardDeziLead: "Zahlen mit Komma, bis zu zwei Stellen, auch unter null.",
@@ -1163,7 +1173,8 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       soundOff: "Ton aus",
     },
     en: {
-      meta: "Connect rational numbers from smallest to largest. Decimals and fractions, grade 6.",
+      appTitle: "Enchanted\nNumber Order",
+      meta: "Enchanted Number Order. Connect rational numbers from smallest to largest. Decimals and fractions, grade 6.",
       eyebrow: "Rational numbers · Grade 6",
       lead: "Connect the numbers from smallest to largest.",
       cardDeziLead: "Numbers with a decimal point, up to two places, including below zero.",
@@ -1205,7 +1216,8 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       soundOff: "Sound off",
     },
     fr: {
-      meta: "Relie des nombres rationnels du plus petit au plus grand. Décimaux et fractions, 6e.",
+      appTitle: "L'ordre enchanté\ndes nombres",
+      meta: "L'ordre enchanté des nombres. Relie des nombres rationnels du plus petit au plus grand. Décimaux et fractions, 6e.",
       eyebrow: "Nombres rationnels · 6e",
       lead: "Relie les nombres du plus petit au plus grand.",
       cardDeziLead: "Nombres à virgule, jusqu'à deux décimales, aussi sous zéro.",
@@ -1247,7 +1259,8 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       soundOff: "Son coupé",
     },
     es: {
-      meta: "Une números racionales de menor a mayor. Decimales y fracciones, 6.º.",
+      appTitle: "El orden encantado\nde los números",
+      meta: "El orden encantado de los números. Une números racionales de menor a mayor. Decimales y fracciones, 6.º.",
       eyebrow: "Números racionales · 6.º",
       lead: "Une los números del menor al mayor.",
       cardDeziLead: "Números con coma, hasta dos decimales, también bajo cero.",
@@ -1539,7 +1552,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
 
   </script>
   <script>
-/* Schimmerblasen — rationale Zahlen vergleichen und ordnen (Klasse 6).
+/* Zauberhafte Zahlenordnung — rationale Zahlen vergleichen und ordnen (Klasse 6).
    All values stay exact fractions. Decimals are hundredths or tenths. */
 (function (root, factory) {
   const api = factory();
@@ -2572,6 +2585,11 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
     return save.stars[mode][index - 1] > 0;
   }
 
+  function appTitle() {
+    const raw = I ? I.t("appTitle") : "Zauberhafte Zahlenordnung";
+    return raw.replace(/\s*\n\s*/g, " ");
+  }
+
   function show(name) {
     home.hidden = name !== "home";
     levelsScreen.hidden = name !== "levels";
@@ -2590,7 +2608,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
     if (!SL.modes[mode]) {
       show("home");
       renderHome();
-      document.title = "Schimmerblasen";
+      document.title = appTitle();
       return;
     }
     if (parts[1] && /^\d+$/.test(parts[1])) {
@@ -2657,7 +2675,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
     document.getElementById("levels-kicker").textContent = I ? I.t("choose") : "Wähle ein Level";
     document.getElementById("levels-title").textContent = copy.title;
     document.getElementById("levels-lead").textContent = copy.lead;
-    document.title = copy.title + " · Schimmerblasen";
+    document.title = copy.title + " · " + appTitle();
     const list = document.getElementById("level-list");
     list.replaceChildren();
     let markedNext = false;
@@ -2794,7 +2812,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
     laidSize = { w: 0, h: 0 };
     const copy = levelCopy(mode, index);
     show("play");
-    document.title = copy.name + " · Schimmerblasen";
+    document.title = copy.name + " · " + appTitle();
     document.getElementById("play-title").textContent = copy.name;
     hintBtn.disabled = false;
     bubblesEl.replaceChildren();
@@ -3386,7 +3404,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
     const resetBtn = document.getElementById("reset");
     resetBtn.textContent = resetArmed ? I.t("resetConfirm") : I.t("reset");
     if (!home.hidden) {
-      document.title = "Schimmerblasen";
+      document.title = appTitle();
       renderHome();
       return;
     }
@@ -3407,7 +3425,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       );
     });
     const copy = levelCopy(game.mode, game.index);
-    document.title = copy.name + " · Schimmerblasen";
+    document.title = copy.name + " · " + appTitle();
     document.getElementById("play-title").textContent = copy.name;
     goalEl.textContent = goalText();
     updateHud();

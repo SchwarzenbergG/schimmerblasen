@@ -1,4 +1,4 @@
-# Schimmerblasen
+# Zauberhafte Zahlenordnung
 
 **[Direkt spielen](https://schwarzenbergg.github.io/schimmerblasen/Schimmerblasen.html)** öffnet die fertige Einzeldatei im Browser. Es ist nichts herunterzuladen.
 
@@ -7,6 +7,8 @@
 Ein kleines Spiel für rationale Zahlen, etwa Klasse 6. In schimmernden Blasen erscheinen Dezimalzahlen, Brüche und gemischte Zahlen. Sie werden von der kleinsten zur größten verbunden. Eine Leuchtkette folgt den Blasen, und jede richtig gewählte Zahl setzt sich auf den Zahlenstrahl.
 
 Erstellt mit Grok 4.7.
+
+Der Titel heißt auf Englisch Enchanted Number Order, auf Französisch L'ordre enchanté des nombres und auf Spanisch El orden encantado de los números.
 
 Die Seite gibt es auf Deutsch, Englisch, Französisch und Spanisch. Oben rechts stehen DE, EN, FR und ES. Die Wahl bleibt im Browser gespeichert. Beim ersten Öffnen gilt die Sprache des Browsers, wenn sie eine dieser vier ist, sonst Deutsch. Dezimalzahlen nutzen im Englischen den Punkt und sonst das Komma.
 
@@ -60,7 +62,7 @@ Die MIT-Lizenz ist für dieses öffentliche Repository gewählt, damit die Datei
 
 ## English
 
-Schimmerblasen is a grade-6 game: connect rational numbers from smallest to largest. Bubbles show decimals, fractions, and mixed numbers. The interface is in German, English, French, and Spanish.
+Enchanted Number Order is a grade-6 game: connect rational numbers from smallest to largest. Bubbles show decimals, fractions, and mixed numbers. The interface is in German, English, French, and Spanish.
 
 [Play it](https://schwarzenbergg.github.io/schimmerblasen/Schimmerblasen.html) opens the single file in the browser. You can also open `index.html` from the source, or share `Schimmerblasen.html` offline. Add `?alle=1` to unlock every level. Game code is MIT. The embedded Fraunces and Nunito fonts stay under the SIL Open Font License 1.1.
 

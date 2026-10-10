@@ -123,6 +123,11 @@
     return save.stars[mode][index - 1] > 0;
   }
 
+  function appTitle() {
+    const raw = I ? I.t("appTitle") : "Zauberhafte Zahlenordnung";
+    return raw.replace(/\s*\n\s*/g, " ");
+  }
+
   function show(name) {
     home.hidden = name !== "home";
     levelsScreen.hidden = name !== "levels";
@@ -141,7 +146,7 @@
     if (!SL.modes[mode]) {
       show("home");
       renderHome();
-      document.title = "Schimmerblasen";
+      document.title = appTitle();
       return;
     }
     if (parts[1] && /^\d+$/.test(parts[1])) {
@@ -208,7 +213,7 @@
     document.getElementById("levels-kicker").textContent = I ? I.t("choose") : "Wähle ein Level";
     document.getElementById("levels-title").textContent = copy.title;
     document.getElementById("levels-lead").textContent = copy.lead;
-    document.title = copy.title + " · Schimmerblasen";
+    document.title = copy.title + " · " + appTitle();
     const list = document.getElementById("level-list");
     list.replaceChildren();
     let markedNext = false;
@@ -345,7 +350,7 @@
     laidSize = { w: 0, h: 0 };
     const copy = levelCopy(mode, index);
     show("play");
-    document.title = copy.name + " · Schimmerblasen";
+    document.title = copy.name + " · " + appTitle();
     document.getElementById("play-title").textContent = copy.name;
     hintBtn.disabled = false;
     bubblesEl.replaceChildren();
@@ -937,7 +942,7 @@
     const resetBtn = document.getElementById("reset");
     resetBtn.textContent = resetArmed ? I.t("resetConfirm") : I.t("reset");
     if (!home.hidden) {
-      document.title = "Schimmerblasen";
+      document.title = appTitle();
       renderHome();
       return;
     }
@@ -958,7 +963,7 @@
       );
     });
     const copy = levelCopy(game.mode, game.index);
-    document.title = copy.name + " · Schimmerblasen";
+    document.title = copy.name + " · " + appTitle();
     document.getElementById("play-title").textContent = copy.name;
     goalEl.textContent = goalText();
     updateHud();
