@@ -203,11 +203,12 @@
   }
 
   function renderLevels(mode) {
-    const spec = modeCopy(mode);
+    const spec = SL.modes[mode];
+    const copy = modeCopy(mode);
     document.getElementById("levels-kicker").textContent = I ? I.t("choose") : "Wähle ein Level";
-    document.getElementById("levels-title").textContent = spec.title;
-    document.getElementById("levels-lead").textContent = spec.lead;
-    document.title = spec.title + " · Schimmerblasen";
+    document.getElementById("levels-title").textContent = copy.title;
+    document.getElementById("levels-lead").textContent = copy.lead;
+    document.title = copy.title + " · Schimmerblasen";
     const list = document.getElementById("level-list");
     list.replaceChildren();
     let markedNext = false;
