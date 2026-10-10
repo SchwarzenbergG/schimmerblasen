@@ -365,6 +365,7 @@
       mistakes: 0,
       hints: 0,
       done: false,
+      stopped: false,
       linked: [],
       segments: [],
       bubbles: [],
@@ -541,10 +542,10 @@
     document.getElementById("play-kicker").textContent = I
       ? I.progress(modeTitle, game.next, game.items.length)
       : modeTitle + " · " + game.next + " von " + game.items.length;
-    const possible = Math.max(1, 3 - game.mistakes - game.hints);
+    const possible = game.done ? game.earned : Math.max(1, 3 - game.mistakes - game.hints);
     renderStars(
       document.getElementById("live-stars"),
-      game.done ? Math.max(1, 3 - game.mistakes - game.hints) : possible,
+      possible,
       I ? I.starsLeft(possible) : possible + " von 3 Sternen noch möglich"
     );
   }
@@ -610,7 +611,8 @@
       playBad();
       game.lastWrong = { picked: item, correct: game.items[game.next] };
       setFeedback(wrongMessage(item, game.items[game.next]), "bad", "bad");
-      updateHud();
+      if (game.mistakes >= 4) stopLevel();
+      else updateHud();
       return;
     }
     connect(bubble);
@@ -707,6 +709,7 @@
 
   function finish() {
     game.done = true;
+    game.stopped = false;
     hintBtn.disabled = true;
     game.earned = Math.max(1, 3 - game.mistakes - game.hints);
     game.prevStars = save.stars[game.mode][game.index];
@@ -720,45 +723,73 @@
     dialog.showModal();
   }
 
+  function stopLevel() {
+    game.done = true;
+    game.stopped = true;
+    game.earned = 0;
+    game.prevStars = save.stars[game.mode][game.index];
+    hintBtn.disabled = true;
+    game.elapsed = performance.now() - game.t0;
+    updateHud();
+    renderDone();
+    closeAction = "levels";
+    dialog.showModal();
+  }
+
   function renderDone() {
     const copy = levelCopy(game.mode, game.index);
     const earned = game.earned;
     const prev = game.prevStars;
     document.getElementById("done-kicker").textContent = copy.name;
-    document.getElementById("done-title").textContent = I
-      ? I.doneTitle(earned)
-      : (earned === 3 ? "Wunderschön sortiert" : earned === 2 ? "Gut gelöst" : "Geschafft");
-    renderStars(document.getElementById("done-stars"), earned, I ? I.stars(earned) : earned + " von 3 Sternen", true);
     document.getElementById("done-stats").textContent = I
       ? I.statsLine(game.mistakes, game.hints, game.elapsed)
       : statsLine(game.elapsed);
-    document.getElementById("done-note").textContent = I ? I.note(earned, prev) : noteFor(earned, prev);
-    const seq = document.getElementById("done-seq");
-    seq.replaceChildren();
-    game.items.forEach((item, i) => {
-      if (i > 0) {
-        const arrow = document.createElement("span");
-        arrow.className = "seq-arrow";
-        arrow.textContent = "→";
-        seq.appendChild(arrow);
+    const seqLabel = document.getElementById("done-seq-label");
+    if (game.stopped) {
+      document.getElementById("done-title").textContent = I ? I.t("stoppedTitle") : "Vier Versuche sind vorbei";
+      renderStars(document.getElementById("done-stars"), 0, I ? I.stars(0) : "0 von 3 Sternen", true);
+      document.getElementById("done-note").textContent = I
+        ? I.t("stoppedNote")
+        : "Das Level stoppt nach vier Fehlern. Versuch es noch einmal.";
+      document.getElementById("done-seq").replaceChildren();
+      document.getElementById("done-order").textContent = "";
+      seqLabel.hidden = true;
+    } else {
+      document.getElementById("done-title").textContent = I
+        ? I.doneTitle(earned)
+        : (earned === 3 ? "Wunderschön sortiert" : earned === 2 ? "Gut gelöst" : "Geschafft");
+      renderStars(document.getElementById("done-stars"), earned, I ? I.stars(earned) : earned + " von 3 Sternen", true);
+      document.getElementById("done-note").textContent = I ? I.note(earned, prev) : noteFor(earned, prev);
+      seqLabel.hidden = false;
+      const seq = document.getElementById("done-seq");
+      seq.replaceChildren();
+      game.items.forEach((item, i) => {
+        if (i > 0) {
+          const arrow = document.createElement("span");
+          arrow.className = "seq-arrow";
+          arrow.textContent = "→";
+          seq.appendChild(arrow);
+        }
+        const token = document.createElement("span");
+        fillToken(token, item);
+        seq.appendChild(token);
+      });
+      const spoken = game.items.map((item) => item.aria).join(", ");
+      document.getElementById("done-order").textContent = I ? I.order(spoken) : "Von klein nach groß: " + spoken;
+      const last = game.index >= SL.modes[game.mode].levels.length - 1;
+      const all = save.stars[game.mode].every((n) => n > 0);
+      let extra = "";
+      if (game.mode === "misch" && all) extra = I ? I.extraCapstone() : " Das Abschlusslevel ist geschafft.";
+      else if (last && all) extra = I ? I.extraMode() : " Alle Level in diesem Modus sind geschafft.";
+      if (game.mode !== "misch" && last && prev === 0 && capstoneOpen()) {
+        const finale = levelCopy("misch", 0).name;
+        extra += I ? I.extraOpen(finale) : " " + finale + " ist jetzt offen.";
       }
-      const token = document.createElement("span");
-      fillToken(token, item);
-      seq.appendChild(token);
-    });
-    const spoken = game.items.map((item) => item.aria).join(", ");
-    document.getElementById("done-order").textContent = I ? I.order(spoken) : "Von klein nach groß: " + spoken;
-    const last = game.index >= SL.modes[game.mode].levels.length - 1;
-    document.getElementById("done-next").hidden = last;
-    const all = save.stars[game.mode].every((n) => n > 0);
-    let extra = "";
-    if (game.mode === "misch" && all) extra = I ? I.extraCapstone() : " Das Abschlusslevel ist geschafft.";
-    else if (last && all) extra = I ? I.extraMode() : " Alle Level in diesem Modus sind geschafft.";
-    if (game.mode !== "misch" && last && prev === 0 && capstoneOpen()) {
-      const finale = levelCopy("misch", 0).name;
-      extra += I ? I.extraOpen(finale) : " " + finale + " ist jetzt offen.";
+      if (extra) document.getElementById("done-note").textContent += extra;
     }
-    if (extra) document.getElementById("done-note").textContent += extra;
+    const nextIndex = game.index + 1;
+    const hasNext = nextIndex < SL.modes[game.mode].levels.length && unlocked(game.mode, nextIndex);
+    document.getElementById("done-next").hidden = !hasNext;
   }
 
   function statsLine(ms) {

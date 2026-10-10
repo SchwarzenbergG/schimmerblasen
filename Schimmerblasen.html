@@ -818,7 +818,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
           <p class="lead" id="levels-lead"></p>
         </div>
       </div>
-      <p class="fine" data-i18n="fine">Jeder Fehler und jede Hilfe kostet einen Stern. Drei Sterne gibt es ohne Fehler und ohne Hilfe.</p>
+      <p class="fine" data-i18n="fine">Jeder Fehler und jede Hilfe kostet einen Stern. Drei Sterne gibt es ohne Fehler und ohne Hilfe. Nach vier Fehlern endet das Level.</p>
       <div class="level-list" id="level-list"></div>
     </div>
   </section>
@@ -1144,7 +1144,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       reset: "Fortschritt löschen",
       resetConfirm: "Wirklich löschen?",
       backHome: "Start",
-      fine: "Jeder Fehler und jede Hilfe kostet einen Stern. Drei Sterne gibt es ohne Fehler und ohne Hilfe.",
+      fine: "Jeder Fehler und jede Hilfe kostet einen Stern. Drei Sterne gibt es ohne Fehler und ohne Hilfe. Nach vier Fehlern endet das Level.",
       backLevels: "Level",
       rule: "Merksatz",
       hint: "Hilfe",
@@ -1167,6 +1167,8 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       done3: "Wunderschön sortiert",
       done2: "Gut gelöst",
       done1: "Geschafft",
+      stoppedTitle: "Vier Versuche sind vorbei",
+      stoppedNote: "Das Level stoppt nach vier Fehlern. Versuch es noch einmal.",
       noteNew: "Neue Bestleistung.",
       noteHeld: "Bestleistung gehalten.",
       langLabel: "Sprache",
@@ -1187,7 +1189,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       reset: "Clear progress",
       resetConfirm: "Really clear?",
       backHome: "Home",
-      fine: "Each mistake and each hint costs one star. Three stars means no mistakes and no hints.",
+      fine: "Each mistake and each hint costs one star. Three stars means no mistakes and no hints. After four mistakes the level stops.",
       backLevels: "Levels",
       rule: "Rule",
       hint: "Hint",
@@ -1210,6 +1212,8 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       done3: "Beautifully sorted",
       done2: "Well solved",
       done1: "Done",
+      stoppedTitle: "Four tries are up",
+      stoppedNote: "The level stops after four mistakes. Try it again.",
       noteNew: "New best.",
       noteHeld: "Best score kept.",
       langLabel: "Language",
@@ -1230,7 +1234,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       reset: "Effacer la progression",
       resetConfirm: "Vraiment effacer ?",
       backHome: "Accueil",
-      fine: "Chaque erreur et chaque aide coûtent une étoile. Trois étoiles, c'est sans erreur et sans aide.",
+      fine: "Chaque erreur et chaque aide coûtent une étoile. Trois étoiles, c'est sans erreur et sans aide. Après quatre erreurs, le niveau s'arrête.",
       backLevels: "Niveaux",
       rule: "Mémo",
       hint: "Aide",
@@ -1253,6 +1257,8 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       done3: "Magnifiquement rangé",
       done2: "Bien résolu",
       done1: "Réussi",
+      stoppedTitle: "Quatre essais, c'est tout",
+      stoppedNote: "Le niveau s'arrête après quatre erreurs. Essaie encore.",
       noteNew: "Nouveau record.",
       noteHeld: "Record conservé.",
       langLabel: "Langue",
@@ -1273,7 +1279,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       reset: "Borrar el progreso",
       resetConfirm: "¿De verdad borrar?",
       backHome: "Inicio",
-      fine: "Cada error y cada ayuda cuestan una estrella. Tres estrellas significa sin errores y sin ayudas.",
+      fine: "Cada error y cada ayuda cuestan una estrella. Tres estrellas significa sin errores y sin ayudas. Tras cuatro errores, el nivel se detiene.",
       backLevels: "Niveles",
       rule: "Regla",
       hint: "Ayuda",
@@ -1296,6 +1302,8 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       done3: "Preciosamente ordenado",
       done2: "Bien resuelto",
       done1: "Conseguido",
+      stoppedTitle: "Se acabaron los cuatro intentos",
+      stoppedNote: "El nivel se detiene tras cuatro errores. Inténtalo de nuevo.",
       noteNew: "Nueva mejor marca.",
       noteHeld: "Mejor marca conservada.",
       langLabel: "Idioma",
@@ -2828,6 +2836,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       mistakes: 0,
       hints: 0,
       done: false,
+      stopped: false,
       linked: [],
       segments: [],
       bubbles: [],
@@ -3004,10 +3013,10 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
     document.getElementById("play-kicker").textContent = I
       ? I.progress(modeTitle, game.next, game.items.length)
       : modeTitle + " · " + game.next + " von " + game.items.length;
-    const possible = Math.max(1, 3 - game.mistakes - game.hints);
+    const possible = game.done ? game.earned : Math.max(1, 3 - game.mistakes - game.hints);
     renderStars(
       document.getElementById("live-stars"),
-      game.done ? Math.max(1, 3 - game.mistakes - game.hints) : possible,
+      possible,
       I ? I.starsLeft(possible) : possible + " von 3 Sternen noch möglich"
     );
   }
@@ -3073,7 +3082,8 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
       playBad();
       game.lastWrong = { picked: item, correct: game.items[game.next] };
       setFeedback(wrongMessage(item, game.items[game.next]), "bad", "bad");
-      updateHud();
+      if (game.mistakes >= 4) stopLevel();
+      else updateHud();
       return;
     }
     connect(bubble);
@@ -3170,6 +3180,7 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
 
   function finish() {
     game.done = true;
+    game.stopped = false;
     hintBtn.disabled = true;
     game.earned = Math.max(1, 3 - game.mistakes - game.hints);
     game.prevStars = save.stars[game.mode][game.index];
@@ -3183,45 +3194,73 @@ dialog::backdrop { background: rgba(4, 10, 20, .62); backdrop-filter: blur(8px);
     dialog.showModal();
   }
 
+  function stopLevel() {
+    game.done = true;
+    game.stopped = true;
+    game.earned = 0;
+    game.prevStars = save.stars[game.mode][game.index];
+    hintBtn.disabled = true;
+    game.elapsed = performance.now() - game.t0;
+    updateHud();
+    renderDone();
+    closeAction = "levels";
+    dialog.showModal();
+  }
+
   function renderDone() {
     const copy = levelCopy(game.mode, game.index);
     const earned = game.earned;
     const prev = game.prevStars;
     document.getElementById("done-kicker").textContent = copy.name;
-    document.getElementById("done-title").textContent = I
-      ? I.doneTitle(earned)
-      : (earned === 3 ? "Wunderschön sortiert" : earned === 2 ? "Gut gelöst" : "Geschafft");
-    renderStars(document.getElementById("done-stars"), earned, I ? I.stars(earned) : earned + " von 3 Sternen", true);
     document.getElementById("done-stats").textContent = I
       ? I.statsLine(game.mistakes, game.hints, game.elapsed)
       : statsLine(game.elapsed);
-    document.getElementById("done-note").textContent = I ? I.note(earned, prev) : noteFor(earned, prev);
-    const seq = document.getElementById("done-seq");
-    seq.replaceChildren();
-    game.items.forEach((item, i) => {
-      if (i > 0) {
-        const arrow = document.createElement("span");
-        arrow.className = "seq-arrow";
-        arrow.textContent = "→";
-        seq.appendChild(arrow);
+    const seqLabel = document.getElementById("done-seq-label");
+    if (game.stopped) {
+      document.getElementById("done-title").textContent = I ? I.t("stoppedTitle") : "Vier Versuche sind vorbei";
+      renderStars(document.getElementById("done-stars"), 0, I ? I.stars(0) : "0 von 3 Sternen", true);
+      document.getElementById("done-note").textContent = I
+        ? I.t("stoppedNote")
+        : "Das Level stoppt nach vier Fehlern. Versuch es noch einmal.";
+      document.getElementById("done-seq").replaceChildren();
+      document.getElementById("done-order").textContent = "";
+      seqLabel.hidden = true;
+    } else {
+      document.getElementById("done-title").textContent = I
+        ? I.doneTitle(earned)
+        : (earned === 3 ? "Wunderschön sortiert" : earned === 2 ? "Gut gelöst" : "Geschafft");
+      renderStars(document.getElementById("done-stars"), earned, I ? I.stars(earned) : earned + " von 3 Sternen", true);
+      document.getElementById("done-note").textContent = I ? I.note(earned, prev) : noteFor(earned, prev);
+      seqLabel.hidden = false;
+      const seq = document.getElementById("done-seq");
+      seq.replaceChildren();
+      game.items.forEach((item, i) => {
+        if (i > 0) {
+          const arrow = document.createElement("span");
+          arrow.className = "seq-arrow";
+          arrow.textContent = "→";
+          seq.appendChild(arrow);
+        }
+        const token = document.createElement("span");
+        fillToken(token, item);
+        seq.appendChild(token);
+      });
+      const spoken = game.items.map((item) => item.aria).join(", ");
+      document.getElementById("done-order").textContent = I ? I.order(spoken) : "Von klein nach groß: " + spoken;
+      const last = game.index >= SL.modes[game.mode].levels.length - 1;
+      const all = save.stars[game.mode].every((n) => n > 0);
+      let extra = "";
+      if (game.mode === "misch" && all) extra = I ? I.extraCapstone() : " Das Abschlusslevel ist geschafft.";
+      else if (last && all) extra = I ? I.extraMode() : " Alle Level in diesem Modus sind geschafft.";
+      if (game.mode !== "misch" && last && prev === 0 && capstoneOpen()) {
+        const finale = levelCopy("misch", 0).name;
+        extra += I ? I.extraOpen(finale) : " " + finale + " ist jetzt offen.";
       }
-      const token = document.createElement("span");
-      fillToken(token, item);
-      seq.appendChild(token);
-    });
-    const spoken = game.items.map((item) => item.aria).join(", ");
-    document.getElementById("done-order").textContent = I ? I.order(spoken) : "Von klein nach groß: " + spoken;
-    const last = game.index >= SL.modes[game.mode].levels.length - 1;
-    document.getElementById("done-next").hidden = last;
-    const all = save.stars[game.mode].every((n) => n > 0);
-    let extra = "";
-    if (game.mode === "misch" && all) extra = I ? I.extraCapstone() : " Das Abschlusslevel ist geschafft.";
-    else if (last && all) extra = I ? I.extraMode() : " Alle Level in diesem Modus sind geschafft.";
-    if (game.mode !== "misch" && last && prev === 0 && capstoneOpen()) {
-      const finale = levelCopy("misch", 0).name;
-      extra += I ? I.extraOpen(finale) : " " + finale + " ist jetzt offen.";
+      if (extra) document.getElementById("done-note").textContent += extra;
     }
-    if (extra) document.getElementById("done-note").textContent += extra;
+    const nextIndex = game.index + 1;
+    const hasNext = nextIndex < SL.modes[game.mode].levels.length && unlocked(game.mode, nextIndex);
+    document.getElementById("done-next").hidden = !hasNext;
   }
 
   function statsLine(ms) {

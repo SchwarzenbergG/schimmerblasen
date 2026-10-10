@@ -22,7 +22,7 @@ So geht eine Runde:
 
 1. Einen Modus wählen: Dezimalzahlen, Brüche oder, wenn beide Abschlüsse geschafft sind, Perlmutt.
 2. Die Blasen der Reihe nach antippen, von der kleinsten Zahl zur größten.
-3. Merksatz zeigt den Hinweis zum Level, ohne einen Stern zu kosten. Hilfe hebt die nächste Blase hervor und kostet einen Stern. Jeder Fehler kostet ebenfalls einen Stern. Drei Sterne gibt es nur ohne Fehler und ohne Hilfe.
+3. Merksatz zeigt den Hinweis zum Level, ohne einen Stern zu kosten. Hilfe hebt die nächste Blase hervor und kostet einen Stern. Jeder Fehler kostet ebenfalls einen Stern. Drei Sterne gibt es nur ohne Fehler und ohne Hilfe. Nach vier Fehlern stoppt das Level, ohne einen Stern.
 
 Mit `?alle=1` hinter der Adresse sind alle Level offen, auch Perlmutt. Beispiel: `index.html?alle=1`.
 
