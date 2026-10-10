@@ -170,6 +170,28 @@
     return done + " von " + stars.length + " " + levelWord + " · " + total + " von " + stars.length * 3 + " Sternen";
   }
 
+  function fitAppTitle() {
+    const h1 = document.querySelector("#home h1");
+    if (!h1 || home.hidden) return;
+    const wrap = h1.parentElement;
+    const pad = parseFloat(getComputedStyle(wrap).paddingLeft) + parseFloat(getComputedStyle(wrap).paddingRight);
+    const available = wrap.clientWidth - pad - 4;
+    if (available < 8) return;
+    h1.style.fontSize = "";
+    let size = parseFloat(getComputedStyle(h1).fontSize);
+    if (!size) return;
+    const textWidth = () => {
+      const range = document.createRange();
+      range.selectNodeContents(h1);
+      return range.getBoundingClientRect().width;
+    };
+    h1.style.fontSize = size + "px";
+    for (let step = 0; step < 4 && textWidth() > available; step++) {
+      size = Math.max(15, size * available / textWidth());
+      h1.style.fontSize = size + "px";
+    }
+  }
+
   function renderHome() {
     document.getElementById("meta-dezi").textContent = summary("dezi");
     document.getElementById("meta-bruch").textContent = summary("bruch");
@@ -183,6 +205,7 @@
     document.getElementById("meta-misch").textContent = open
       ? summary("misch")
       : (I ? I.lockedMeta(tides, crown) : "Noch zu: " + tides + " und " + crown + " abschließen");
+    fitAppTitle();
   }
 
   function starSVG(on) {
@@ -924,6 +947,7 @@
   window.addEventListener("resize", () => {
     sizeCanvas();
     layout();
+    fitAppTitle();
     if (game && !play.hidden) renderLine();
   });
   if (typeof ResizeObserver === "function") {
@@ -999,4 +1023,5 @@
   updateSoundButton();
   requestAnimationFrame(loop);
   route();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAppTitle);
 })();

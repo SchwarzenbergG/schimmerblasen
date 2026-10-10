@@ -249,7 +249,7 @@
 
   const TEXT = {
     de: {
-      appTitle: "Zauberhafte\nZahlenordnung",
+      appTitle: "Zauberhafte Zahlenordnung",
       meta: "Zauberhafte Zahlenordnung. Rationale Zahlen von klein nach groß verbinden. Dezimalzahlen und Brüche, Klasse 6.",
       eyebrow: "Rationale Zahlen · Klasse 6",
       lead: "Verbinde die Zahlen von der kleinsten zur größten.",
@@ -292,7 +292,7 @@
       soundOff: "Ton aus",
     },
     en: {
-      appTitle: "Enchanted\nNumber Order",
+      appTitle: "Enchanted Number Order",
       meta: "Enchanted Number Order. Connect rational numbers from smallest to largest. Decimals and fractions, grade 6.",
       eyebrow: "Rational numbers · Grade 6",
       lead: "Connect the numbers from smallest to largest.",
@@ -335,7 +335,7 @@
       soundOff: "Sound off",
     },
     fr: {
-      appTitle: "L'ordre enchanté\ndes nombres",
+      appTitle: "L'ordre enchanté des nombres",
       meta: "L'ordre enchanté des nombres. Relie des nombres rationnels du plus petit au plus grand. Décimaux et fractions, 6e.",
       eyebrow: "Nombres rationnels · 6e",
       lead: "Relie les nombres du plus petit au plus grand.",
@@ -378,7 +378,7 @@
       soundOff: "Son coupé",
     },
     es: {
-      appTitle: "El orden encantado\nde los números",
+      appTitle: "El orden encantado de los números",
       meta: "El orden encantado de los números. Une números racionales de menor a mayor. Decimales y fracciones, 6.º.",
       eyebrow: "Números racionales · 6.º",
       lead: "Une los números del menor al mayor.",
